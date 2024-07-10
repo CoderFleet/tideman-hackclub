@@ -24,6 +24,7 @@ pair pairs[MAX * (MAX - 1) / 2];
 
 int pair_count;
 int candidate_count;
+int cr = 0;
 
 // Function prototypes
 bool vote(int rank, string name, int ranks[]);
@@ -84,6 +85,8 @@ int main(int argc, string argv[])
             }
         }
 
+        cr = 0;
+
         record_preferences(ranks);
 
         printf("\n");
@@ -99,11 +102,11 @@ int main(int argc, string argv[])
 // Update ranks given a new vote
 bool vote(int rank, string name, int ranks[])
 {
-    int cr = 0;
     for (int i = 0; i < candidate_count; i++)
     {
-        if (strcmp(name, candidates[i]) == 0){
-            ranks[cr] = rank;
+        if (strcmp(name, candidates[i]) == 0)
+        {
+            ranks[cr] = i;
             cr++;
             return true;
         }
@@ -116,12 +119,9 @@ void record_preferences(int ranks[])
 {
     for (int i = 0; i < candidate_count; i++)
     {
-        for (int j = 0; j < candidate_count; j++)
+        for (int j = i+1; j < candidate_count ; j++)
         {
-            if (ranks[i] > ranks[j])
-            {
-                preferences[i][j]++;
-            }
+            preferences[ranks[i]][ranks[j]]++;
         }
     }
     return;
@@ -130,14 +130,27 @@ void record_preferences(int ranks[])
 // Record pairs of candidates where one is preferred over the other
 void add_pairs(void)
 {
-    // TODO
+    for (int i = 0; i < candidate_count; i++)
+    {
+        for (int j = 0; j < candidate_count; j++)
+        {
+            if (preferences[i][j] > preferences[j][i])
+            {
+                pair preferred;
+                preferred.winner = i;
+                preferred.loser = j;
+                pairs[pair_count] = preferred;
+                pair_count++;
+            }
+        }
+    }
     return;
 }
 
 // Sort pairs in decreasing order by strength of victory
 void sort_pairs(void)
 {
-    // TODO
+
     return;
 }
 
