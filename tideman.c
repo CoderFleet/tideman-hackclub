@@ -119,7 +119,7 @@ void record_preferences(int ranks[])
 {
     for (int i = 0; i < candidate_count; i++)
     {
-        for (int j = i+1; j < candidate_count ; j++)
+        for (int j = i + 1; j < candidate_count; j++)
         {
             preferences[ranks[i]][ranks[j]]++;
         }
@@ -150,20 +150,22 @@ void add_pairs(void)
 // Sort pairs in decreasing order by strength of victory
 void sort_pairs(void)
 {
-
+    for (int i = 0; i < pair_count; i++)
+    {
+        for (int j = 0; j < pair_count; j++)
+        {
+            int strengthJ = preferences[pairs[j].winner][pairs[j].loser] -
+                            preferences[pairs[j].loser][pairs[j].winner];
+            int strengthJ1 = preferences[pairs[j + 1].winner][pairs[j + 1].loser] -
+                             preferences[pairs[j + 1].loser][pairs[j + 1].winner];
+            if (strengthJ1 > strengthJ)
+            {
+                pair temp = pairs[j];
+                pairs[j] = pairs[j + 1];
+                pairs[j + 1] = temp;
+            }
+        }
+    }
     return;
 }
 
-// Lock pairs into the candidate graph in order, without creating cycles
-void lock_pairs(void)
-{
-    // TODO
-    return;
-}
-
-// Print the winner of the election
-void print_winner(void)
-{
-    // TODO
-    return;
-}
